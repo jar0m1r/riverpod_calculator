@@ -1,7 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:riverpod_calculator/business_logic/secretword/secretword_logic.dart';
-
 class SecretwordSolver {
   final Function inputLetterCallback;
   bool _activated = false;
@@ -15,7 +13,6 @@ class SecretwordSolver {
     _activated = true;
     while (_activated) {
       await Future.delayed(Duration(seconds: 5));
-      print('solver called callback');
       inputLetterCallback(generateRandomLetter());
     }
   }
