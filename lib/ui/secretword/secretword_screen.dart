@@ -31,7 +31,7 @@ class SecretwordScreen extends StatelessWidget {
         FloatingActionButton(
           child: Icon(Icons.auto_awesome_mosaic),
           onPressed: () =>
-              context.read(secretwordPlayerInputProvider).startSolver(),
+              context.read(secretwordPlayerInputProvider).newGame(),
         ),
       ]),
     );

@@ -19,7 +19,7 @@ class SecretwordLogic extends StateNotifier<SecretwordState> {
 
   startGame() => state = SecretwordPlayState(state.word, state.playerInput);
 
-  startSolver() => null;
+  newGame() => state = SecretwordInitialState(['a', 'n', 'd', 'e', 'r']);
 
   inputLetter(String letter) {
     print('tried $letter');
