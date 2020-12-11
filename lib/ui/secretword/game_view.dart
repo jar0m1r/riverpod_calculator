@@ -8,16 +8,31 @@ class GameView extends ConsumerWidget {
     final game = watch(secretwordPlayerInputProvider);
     final gameState = watch(secretwordPlayerInputProvider.state);
     return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: gameState.word
-            .map((letter) => Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(game.isPlayerInput(letter) ? letter : '.',
-                      style: TextStyle(fontSize: 32)),
-                ))
-            .toList(),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: gameState.playerInput
+                .map((letter) => Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(letter, style: TextStyle(fontSize: 24)),
+                    ))
+                .toList(),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: gameState.word
+                  .map((letter) => Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(game.isPlayerInput(letter) ? letter : '.',
+                            style: TextStyle(fontSize: 32)),
+                      ))
+                  .toList(),
+            ),
+          ),
+        ],
       ),
     );
   }
