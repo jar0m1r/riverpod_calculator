@@ -35,7 +35,9 @@ class MyNotesScreen extends StatelessWidget {
         children: [
           FloatingActionButton(
             child: Icon(Icons.add),
-            onPressed: () => context.read(notesNotifierProvider).refresh(),
+            onPressed: () async => await context
+                .read(notesNotifierProvider)
+                .addNote(Note('new note', 'this is a test')),
           ),
         ],
       ),

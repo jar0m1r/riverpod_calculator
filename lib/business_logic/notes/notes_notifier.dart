@@ -7,7 +7,6 @@ import 'package:riverpod_calculator/services/notes_repository.dart';
 class NotesNotifier extends StateNotifier<NotesState> {
   final NotesRepository
       _notesRepository; //notesRepositoryService (check lazySingleton options for a service)
-  List<Note> notes;
 
   NotesNotifier(this._notesRepository) : super(NotesInitialState());
 
@@ -16,10 +15,21 @@ class NotesNotifier extends StateNotifier<NotesState> {
       state = NotesLoadingState();
       final notes = await _notesRepository.fetchNotes();
       state = NotesLoadedState(notes);
-    } catch (e) {
-      state = NotesErrorState(e);
+    } on Exception {
+      state = NotesErrorState('error loading notes');
     }
   }
 
-  Future<void> refresh() async => await getNotes();
+  Future<void> addNote(Note note) async {
+    try {
+      await _addNoteToRepository(note);
+      getNotes();
+    } catch (e) {
+      state = NotesErrorState(e.toString());
+    }
+  }
+
+  Future<void> _addNoteToRepository(Note note) async {
+    await _notesRepository.createNote(note);
+  }
 }
