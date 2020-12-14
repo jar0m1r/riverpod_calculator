@@ -26,16 +26,6 @@ class MyNotesScreen extends StatelessWidget {
             loading: () => _buildLoading(),
             error: (error) => _buildError(error),
           );
-
-          // if (state is NotesInitialState) {
-          //   return _buildInitial();
-          // } else if (state is NotesLoadingState) {
-          //   return _buildLoading();
-          // } else if (state is NotesLoadedState) {
-          //   return _buildLoaded(state.notes);
-          // } else {
-          //   return _buildInitial();
-          // }
         }),
       ),
       floatingActionButton: Row(
