@@ -8,24 +8,24 @@ class NotesNotifier extends StateNotifier<NotesState> {
   final NotesRepository
       _notesRepository; //notesRepositoryService (check lazySingleton options for a service)
 
-  NotesNotifier(this._notesRepository) : super(NotesInitialState());
+  NotesNotifier(this._notesRepository) : super(NotesState.initial());
 
   Future<void> getNotes() async {
     try {
-      state = NotesLoadingState();
+      state = NotesState.loading();
       final notes = await _notesRepository.fetchNotes();
-      state = NotesLoadedState(notes);
+      state = NotesState(notes);
     } on Exception {
-      state = NotesErrorState('error loading notes');
+      state = NotesState.error('error loading notes');
     }
   }
 
   Future<void> addNote(Note note) async {
     try {
       await _addNoteToRepository(note);
-      getNotes();
+      getNotes(); //this is using a state notifier as a viewmodel, should be one or the other
     } catch (e) {
-      state = NotesErrorState(e.toString());
+      state = NotesState.error(e.toString());
     }
   }
 
@@ -33,3 +33,33 @@ class NotesNotifier extends StateNotifier<NotesState> {
     await _notesRepository.createNote(note);
   }
 }
+
+// class NotesNotifier extends StateNotifier<NotesState> {
+//   final NotesRepository
+//       _notesRepository; //notesRepositoryService (check lazySingleton options for a service)
+
+//   NotesNotifier(this._notesRepository) : super(NotesInitialState());
+
+//   Future<void> getNotes() async {
+//     try {
+//       state = NotesLoadingState();
+//       final notes = await _notesRepository.fetchNotes();
+//       state = NotesLoadedState(notes);
+//     } on Exception {
+//       state = NotesErrorState('error loading notes');
+//     }
+//   }
+
+//   Future<void> addNote(Note note) async {
+//     try {
+//       await _addNoteToRepository(note);
+//       getNotes(); //this is using a state notifier as a viewmodel, should be one or the other
+//     } catch (e) {
+//       state = NotesErrorState(e.toString());
+//     }
+//   }
+
+//   Future<void> _addNoteToRepository(Note note) async {
+//     await _notesRepository.createNote(note);
+//   }
+// }

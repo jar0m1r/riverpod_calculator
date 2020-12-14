@@ -12,22 +12,30 @@ class MyNotesScreen extends StatelessWidget {
       body: ProviderListener<NotesState>(
         provider: notesNotifierProvider.state,
         onChange: (context, state) {
-          if (state is NotesErrorState)
+          if (state is Error) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
+                .showSnackBar(SnackBar(content: Text((state.message))));
+          }
         },
         child: Consumer(builder: (context, watch, child) {
           final state = watch(notesNotifierProvider.state);
 
-          if (state is NotesInitialState) {
-            return _buildInitial();
-          } else if (state is NotesLoadingState) {
-            return _buildLoading();
-          } else if (state is NotesLoadedState) {
-            return _buildLoaded(state.notes);
-          } else {
-            return _buildInitial();
-          }
+          return state.when(
+            (notes) => _buildLoaded(notes),
+            initial: () => _buildLoading(),
+            loading: () => _buildLoading(),
+            error: (error) => _buildError(error),
+          );
+
+          // if (state is NotesInitialState) {
+          //   return _buildInitial();
+          // } else if (state is NotesLoadingState) {
+          //   return _buildLoading();
+          // } else if (state is NotesLoadedState) {
+          //   return _buildLoaded(state.notes);
+          // } else {
+          //   return _buildInitial();
+          // }
         }),
       ),
       floatingActionButton: Row(
@@ -52,6 +60,17 @@ class MyNotesScreen extends StatelessWidget {
     return Container(
       child: Center(
         child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildError(String error) {
+    return Container(
+      child: Center(
+        child: Text(
+          error,
+          style: TextStyle(fontSize: 24, color: Colors.red),
+        ),
       ),
     );
   }

@@ -1,26 +1,54 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/rendering.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_calculator/models/note.dart';
 
-abstract class NotesState {}
+part 'notes_state.freezed.dart';
 
-class NotesInitialState implements NotesState {}
+// abstract class NotesState {}
 
-class NotesLoadingState implements NotesState {}
+// class NotesInitialState implements NotesState {}
 
-class NotesLoadedState extends Equatable implements NotesState {
-  final List<Note> notes;
+// class NotesLoadingState implements NotesState {}
 
-  NotesLoadedState(this.notes);
+// class NotesLoadedState extends Equatable implements NotesState {
+//   final List<Note> notes;
 
-  @override
-  List<Object> get props => [notes];
-}
+//   NotesLoadedState(this.notes);
 
-class NotesErrorState extends Equatable implements NotesState {
-  final String message;
+//   @override
+//   List<Object> get props => [notes];
+// }
 
-  NotesErrorState(this.message);
+// class NotesErrorState extends Equatable implements NotesState {
+//   final String message;
 
-  @override
-  List<Object> get props => [message];
+//   NotesErrorState(this.message);
+
+//   @override
+//   List<Object> get props => [message];
+// }
+
+// class LoadingState {}
+
+// class LoadedState {
+//   final List<Note> notes;
+
+//   LoadedState(this.notes);
+// }
+
+// class InitialState {}
+
+// class ErrorState {
+//   final String message;
+
+//   ErrorState(this.message);
+// }
+
+@freezed
+abstract class NotesState with _$NotesState {
+  factory NotesState(List<Note> notes) = Loaded;
+  factory NotesState.initial() = Initial;
+  factory NotesState.loading() = Loading;
+  factory NotesState.error([String message]) = Error;
 }
