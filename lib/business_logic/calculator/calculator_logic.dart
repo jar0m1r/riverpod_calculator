@@ -20,7 +20,8 @@ class CalculatorLogic extends ChangeNotifier {
   _handleInput(String input) {
     print('input >> $input');
     if (numbers.contains(input)) {
-      if (result == null) _handleNumberInput(input);
+      if (result != null) _resetCalculator();
+      _handleNumberInput(input);
     } else if (operators.contains(input)) {
       if (result == null) _handleOperatorInput(input);
     } else if (actions.contains(input)) {
@@ -77,49 +78,57 @@ class CalculatorLogic extends ChangeNotifier {
       }
       notifyListeners();
     } else if (input == 'C') {
-      firstOperand = ['0'];
-      secondOperand = null;
-      theOperator = null;
-      result = null;
-      notifyListeners();
+      _resetCalculator();
     } else if (input == '=') {
       if (firstOperand != null &&
           firstOperand != [] &&
           secondOperand != null &&
           secondOperand != [] &&
           theOperator != null) {
-        final first = int.tryParse(
-                firstOperand.fold('', (result, value) => '$result$value')) ??
-            0;
-        final second = int.tryParse(
-                secondOperand.fold('', (result, value) => '$result$value')) ??
-            0;
-
-        switch (theOperator) {
-          case '+':
-            result = '${first + second}';
-            notifyListeners();
-            break;
-          case '-':
-            result = '${first - second}';
-            notifyListeners();
-            break;
-          case '*':
-            result = '${first * second}';
-            notifyListeners();
-            break;
-          case '/':
-            if (second != 0) {
-              result = (first / second).toStringAsFixed(2);
-            } else {
-              result = 'err';
-            }
-            notifyListeners();
-            break;
-          default:
-            break;
-        }
+        _calculateResult();
       }
+    }
+  }
+
+  _resetCalculator() {
+    firstOperand = ['0'];
+    secondOperand = null;
+    theOperator = null;
+    result = null;
+    notifyListeners();
+  }
+
+  _calculateResult() {
+    final first = int.tryParse(
+            firstOperand.fold('', (result, value) => '$result$value')) ??
+        0;
+    final second = int.tryParse(
+            secondOperand.fold('', (result, value) => '$result$value')) ??
+        0;
+
+    switch (theOperator) {
+      case '+':
+        result = '${first + second}';
+        notifyListeners();
+        break;
+      case '-':
+        result = '${first - second}';
+        notifyListeners();
+        break;
+      case '*':
+        result = '${first * second}';
+        notifyListeners();
+        break;
+      case '/':
+        if (second != 0) {
+          result = (first / second).toStringAsFixed(2);
+        } else {
+          result = 'err';
+        }
+        notifyListeners();
+        break;
+      default:
+        break;
     }
   }
 }

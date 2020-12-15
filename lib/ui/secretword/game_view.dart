@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_calculator/business_logic/secretword/secretword_provider.dart';
+import 'package:riverpod_calculator/ui/secretword/player_input_view.dart';
 
 class GameView extends ConsumerWidget {
   @override
@@ -10,15 +11,7 @@ class GameView extends ConsumerWidget {
     return Container(
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: gameState.playerInput
-                .map((letter) => Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(letter, style: TextStyle(fontSize: 24)),
-                    ))
-                .toList(),
-          ),
+          PlayerInputView(),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

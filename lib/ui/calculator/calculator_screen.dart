@@ -18,9 +18,8 @@ class CalculatorScreen extends StatelessWidget {
                   builder: (context, watch, child) {
                     final model = watch(calculatorProvider);
                     return Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Wrap(
+                        alignment: WrapAlignment.end,
                         children: [
                           if (model.firstOperand != null)
                             CalculationUnitText(model.firstOperand
