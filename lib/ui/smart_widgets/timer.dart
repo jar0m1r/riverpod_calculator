@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_calculator/business_logic/calculator/calculator_provider.dart';
+import 'package:riverpod_calculator/business_logic/counter/calculator_provider.dart';
 
 class TimeoutCounter extends ConsumerWidget {
   @override
