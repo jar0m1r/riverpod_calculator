@@ -7,7 +7,7 @@ final secretwordProvider = StateNotifierProvider((ref) => SecretwordLogic());
 
 final secretwordPlayerInputProvider =
     StateNotifierProvider<SecretwordLogic>((ref) {
-  final inputProvider = ref.watch(playerInputProvider);
+  final inputProvider = ref.read(playerInputProvider);
   return SecretwordLogic(inputStream: inputProvider.stream);
 });
 

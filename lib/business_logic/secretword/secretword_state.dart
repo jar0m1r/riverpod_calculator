@@ -8,7 +8,7 @@ abstract class SecretwordState extends Equatable {
 }
 
 class SecretwordInitialState extends SecretwordState {
-  const SecretwordInitialState(word) : super(word, const ['h', 'm']);
+  const SecretwordInitialState(word) : super(word, const []);
 
   @override
   List<Object> get props => [word];

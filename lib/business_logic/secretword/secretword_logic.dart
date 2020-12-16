@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_calculator/business_logic/player_input/player_input_service.dart';
 import 'package:riverpod_calculator/business_logic/secretword/secretword_state.dart';
 
 class SecretwordLogic extends StateNotifier<SecretwordState> {
