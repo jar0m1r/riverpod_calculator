@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_calculator/business_logic/secretword/secretword_state.dart';
@@ -5,7 +6,8 @@ import 'package:riverpod_calculator/business_logic/secretword/secretword_state.d
 class SecretwordLogic extends StateNotifier<SecretwordState> {
   final Stream<String> inputStream;
 
-  SecretwordLogic({this.inputStream}) : super(_initialValue) {
+  SecretwordLogic({this.inputStream})
+      : super(SecretwordInitialState(<String>[])) {
     //not very solid
     if (inputStream != null)
       inputStream.listen((letter) {
@@ -13,12 +15,38 @@ class SecretwordLogic extends StateNotifier<SecretwordState> {
       });
   }
 
-  static final _initialValue =
-      SecretwordInitialState(['g', 'e', 'h', 'e', 'i', 'm']);
+  final wordList = [
+    'hallo',
+    'zusje',
+    'boek',
+    'fiets',
+    'auto',
+    'katjes',
+    'spelen',
+    'slapen',
+    'kamer',
+    'doei',
+    'steppen',
+    'klimrek',
+    'sint',
+    'mama',
+    'papa',
+    'juf',
+    'step',
+    'konijn',
+    'hond',
+    'winkel',
+    'vlam',
+    'stoep',
+    'straat',
+    'lamp',
+  ];
 
-  startGame() => state = SecretwordPlayState(state.word, state.playerInput);
-
-  newGame() => state = SecretwordInitialState(['a', 'n', 'd', 'e', 'r']);
+  newGame() {
+    var rnd = math.Random();
+    var word = wordList[rnd.nextInt(wordList.length)];
+    state = SecretwordInitialState(word.split(''));
+  }
 
   inputLetter(String letter) {
     print('tried $letter');

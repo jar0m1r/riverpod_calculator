@@ -8,21 +8,23 @@ abstract class SecretwordState extends Equatable {
 }
 
 class SecretwordInitialState extends SecretwordState {
-  const SecretwordInitialState(word) : super(word, const []);
+  const SecretwordInitialState(List<String> word) : super(word, const []);
 
   @override
   List<Object> get props => [word];
 }
 
 class SecretwordPlayState extends SecretwordState {
-  const SecretwordPlayState(word, playerInput) : super(word, playerInput);
+  const SecretwordPlayState(List<String> word, List<String> playerInput)
+      : super(word, playerInput);
 
   @override
   List<Object> get props => [word, playerInput];
 }
 
 class SecretwordPausedState extends SecretwordState {
-  const SecretwordPausedState(word, playerInput) : super(word, playerInput);
+  const SecretwordPausedState(List<String> word, List<String> playerInput)
+      : super(word, playerInput);
 
   @override
   List<Object> get props => [word, playerInput];
@@ -30,7 +32,8 @@ class SecretwordPausedState extends SecretwordState {
 
 class SecretwordFinishedState extends SecretwordState {
   final EndResultType result;
-  const SecretwordFinishedState(word, playerInput, this.result)
+  const SecretwordFinishedState(
+      List<String> word, List<String> playerInput, this.result)
       : super(word, playerInput);
 
   @override

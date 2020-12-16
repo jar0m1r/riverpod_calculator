@@ -4,6 +4,7 @@ class PushPopSwapLogic<T> extends StateNotifier<PushPopSwapState<T>> {
   PushPopSwapLogic(Stream<List<T>> stream)
       : super(PushPopSwapState<T>(<T>[], <T>[], <T>[])) {
     stream.listen((List<T> stack) {
+      print('newstack: $stack');
       changeStackTo(stack);
     });
   }
@@ -14,7 +15,7 @@ class PushPopSwapLogic<T> extends StateNotifier<PushPopSwapState<T>> {
       //stack.push
       state = PushPopSwapState<T>(
           previousStack, [], newStack.sublist(previousStack.length));
-    } else if (previousStack.length < newStack.length) {
+    } else if (previousStack.length > newStack.length) {
       //stack.pop
       state = PushPopSwapState<T>(
           newStack, previousStack.sublist(newStack.length), []);
