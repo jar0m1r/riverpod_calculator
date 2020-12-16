@@ -27,6 +27,7 @@ dependencies:
   flutter_hooks: ^0.15.0
   equatable: ^1.2.5
   freezed_annotation:
+  confetti: ^0.5.4+1
 
 
   # The following adds the Cupertino Icons font to your application.

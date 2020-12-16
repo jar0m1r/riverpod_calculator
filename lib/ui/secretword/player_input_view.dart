@@ -20,8 +20,6 @@ class PlayerInputViewState extends State<PlayerInputView>
       vsync: this,
       duration: Duration(milliseconds: 600),
     );
-
-    _animationController.addStatusListener((status) => print(status));
   }
 
   @override

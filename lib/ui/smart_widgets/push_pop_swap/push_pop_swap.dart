@@ -13,7 +13,7 @@ class PushPopSwap extends StatelessWidget {
         .map(
           (value) => Padding(
             padding: const EdgeInsets.all(4.0),
-            child: Text(value, style: TextStyle(fontSize: 64)),
+            child: Text(value, style: TextStyle(fontSize: 32)),
           ),
         )
         .toList();
@@ -28,7 +28,7 @@ class PushPopSwap extends StatelessWidget {
                   Tween<double>(begin: 1.0, end: 0.0).animate(curvedAnimation),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text(input, style: TextStyle(fontSize: 64)),
+                child: Text(input, style: TextStyle(fontSize: 32)),
               ),
             ))
         .toList();
@@ -39,15 +39,15 @@ class PushPopSwap extends StatelessWidget {
         CurvedAnimation(parent: animationController, curve: Curves.easeOut);
 
     return stackIn
-        .map((input) => ScaleTransition(
-              scale: Tween<double>(begin: 4, end: 1).animate(curvedAnimation),
+        .map((input) => FadeTransition(
+              opacity: Tween<double>(begin: 0, end: 1).animate(curvedAnimation),
               child: SlideTransition(
                 position:
                     Tween<Offset>(begin: Offset(100, 100), end: Offset(0, 0))
                         .animate(curvedAnimation),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: Text(input, style: TextStyle(fontSize: 64)),
+                  child: Text(input, style: TextStyle(fontSize: 32)),
                 ),
               ),
             ))

@@ -24,6 +24,14 @@ class SecretwordLogic extends StateNotifier<SecretwordState> {
     print('tried $letter');
     if (state.playerInput.indexOf(letter) == -1) {
       state = SecretwordPlayState(state.word, [...state.playerInput, letter]);
+      checkFinished();
+    }
+  }
+
+  checkFinished() {
+    if (state.word.every((letter) => state.playerInput.contains(letter))) {
+      state = SecretwordFinishedState(
+          state.word, state.playerInput, EndResultType.win);
     }
   }
 
