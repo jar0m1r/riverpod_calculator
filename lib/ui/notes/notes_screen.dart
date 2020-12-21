@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_calculator/business_logic/notes/notes_provider.dart';
 import 'package:riverpod_calculator/business_logic/notes/notes_state.dart';
-import 'package:riverpod_calculator/models/note.dart';
+import 'package:riverpod_calculator/domain/models/note.dart';
 
 class MyNotesScreen extends StatelessWidget {
   @override

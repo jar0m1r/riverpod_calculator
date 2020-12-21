@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_calculator/business_logic/calculator/calculator_logic.dart';
 import 'package:riverpod_calculator/business_logic/player_input/player_input_provider.dart';
+import 'package:riverpod_calculator/domain/metadata.dart';
 
-final calculatorProvider = ChangeNotifierProvider((ref) {
+final calculatorProvider = ChangeNotifierProvider<CalculatorLogic>((ref) {
   final numbers = ref.read(numbersProvider);
   final operators = ref.read(operatorsProvider);
   final actions = ref.read(actionsProvider);

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_calculator/business_logic/notes/notes_state.dart';
-import 'package:riverpod_calculator/models/note.dart';
+import 'package:riverpod_calculator/domain/models/note.dart';
 import 'package:riverpod_calculator/services/notes_repository.dart';
 
 class NotesNotifier extends StateNotifier<NotesState> {

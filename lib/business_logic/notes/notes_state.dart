@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:riverpod_calculator/models/note.dart';
+import 'package:riverpod_calculator/domain/models/note.dart';
 
 part 'notes_state.freezed.dart';
 

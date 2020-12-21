@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_calculator/business_logic/player_input/player_input_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_calculator/domain/metadata.dart';
 
 class NumpadItem<T> {
   final T value;

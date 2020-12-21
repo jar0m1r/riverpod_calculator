@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_riverpod/all.dart';
 
 class Note extends Equatable {
   final String title;

@@ -1,4 +1,4 @@
-import 'package:riverpod_calculator/models/note.dart';
+import 'package:riverpod_calculator/domain/models/note.dart';
 
 abstract class NotesRepository {
   List<Note> notes;
