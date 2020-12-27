@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_calculator/ui/secretword/secretword_screen.dart';
+import 'package:riverpod_calculator/services/theme_manager/theme_manager.dart';
+import 'package:riverpod_calculator/ui/waves/waves_screen.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final themeManager = watch(themeManagerProvider);
     return MaterialApp(
       title: 'Riverpod Calculator',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: SecretwordScreen(),
+      theme: themeManager.theme,
+      home: WavesScreen(),
     );
   }
 }
