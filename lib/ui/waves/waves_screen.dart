@@ -31,6 +31,7 @@ class WavesPainter extends CustomPainter {
           length: 800.0,
         ),
         Hub(
+          //control point!
           origin: Offset(200.0, 0),
           length: 200.0,
         ),
@@ -46,6 +47,7 @@ class WavesPainter extends CustomPainter {
 
       for (var i = 0; i < offsets.length; i++) {
         final next = (i == offsets.length - 1) ? 0 : i + 1;
+
         path.quadraticBezierTo(
             offsets[i].dx, offsets[i].dy, offsets[next].dx, offsets[next].dy);
       }
@@ -79,10 +81,13 @@ class WaveGrid {
     });
 
     return lanesList.map((hubNodes) {
-      return [
-        ...hubNodes.map((node) => node.first),
-        ...hubNodes.map((node) => node.second),
-      ];
+      final first = <Offset>[];
+      final second = <Offset>[];
+      hubNodes.forEach((hubNode) {
+        first.add(hubNode.first);
+        second.add(hubNode.second);
+      });
+      return [...first, ...second.reversed];
     }).toList();
   }
 }
@@ -104,6 +109,10 @@ class Hub {
       this.margin = 5.0});
 
   List<HubNode> calculateHubNodes(int lanes) {
+    // 0, 0 , 200 , 0
+    // 200, 0 , 200, 200,
+    // 200, 200, 800, 200,
+    // 800, 200, 0, 0
     final marginTotal = margin * (lanes - 1);
     final nodeLength = (length - marginTotal) / lanes;
     return List.generate(lanes, (index) {
