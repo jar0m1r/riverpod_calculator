@@ -1,7 +1,36 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-class WavesScreen extends StatelessWidget {
+class WavesScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => WavesScreenState();
+}
+
+class WavesScreenState extends State<WavesScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 5))
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              _controller.reverse();
+            } else if (status == AnimationStatus.dismissed) {
+              _controller.forward();
+            }
+          })
+          ..forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +38,7 @@ class WavesScreen extends StatelessWidget {
         child: LayoutBuilder(builder: (context, constraints) {
           return CustomPaint(
             size: constraints.biggest,
-            painter: WavesPainter(),
+            painter: WavesPainter(controller: _controller),
           );
         }),
       ),
@@ -18,6 +47,21 @@ class WavesScreen extends StatelessWidget {
 }
 
 class WavesPainter extends CustomPainter {
+  final AnimationController controller;
+
+  WavesPainter({this.controller}) : super(repaint: controller);
+
+  Tween<Offset> topDownTween =
+      Tween<Offset>(begin: Offset(0, -100), end: Offset(0, 100));
+
+  Tween<Offset> leftRightTween =
+      Tween<Offset>(begin: Offset(-100, 0), end: Offset(100, 0));
+
+  Tween<double> scaleUpTween = Tween<double>(begin: 1.0, end: 1.5);
+  Tween<double> scaleUpUpTween = Tween<double>(begin: 1.0, end: 3.0);
+
+  Tween<double> angleTween = Tween<double>(begin: 0.0, end: 0.0);
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -25,22 +69,24 @@ class WavesPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final grid = WaveGrid(
-      lanes: 20,
+      lanes: 15,
       hubs: <Hub>[
         Hub(
           origin: Offset(0, 100),
-          length: 1200.0,
+          length: 700.0,
           margin: 20,
         ),
         Hub(
-            //control point!
-            origin: Offset(200.0, -100.0),
-            length: 200.0,
-            margin: 20,
-            angle: 0.4),
+          //control point!
+          origin:
+              Offset(200.0, -100.0) + leftRightTween.animate(controller).value,
+          length: 200.0,
+          margin: 2,
+          angle: 0.0 + angleTween.animate(controller).value,
+        ),
         Hub(
-          origin: Offset(400.0, 100),
-          length: 1200.0,
+          origin: Offset(400.0, 100) + topDownTween.animate(controller).value,
+          length: 2500.0,
           margin: 20,
         )
       ],
