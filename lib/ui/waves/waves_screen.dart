@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 class WavesScreen extends StatelessWidget {
@@ -24,33 +25,54 @@ class WavesPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     final grid = WaveGrid(
-      lanes: 12,
+      lanes: 20,
       hubs: <Hub>[
         Hub(
-          origin: Offset.zero,
-          length: 800.0,
+          origin: Offset(0, 100),
+          length: 1200.0,
+          margin: 20,
         ),
         Hub(
-          //control point!
-          origin: Offset(200.0, 0),
-          length: 200.0,
-        ),
+            //control point!
+            origin: Offset(200.0, -100.0),
+            length: 200.0,
+            margin: 20,
+            angle: 0.4),
         Hub(
-          origin: Offset(400.0, 0),
-          length: 800.0,
+          origin: Offset(400.0, 100),
+          length: 1200.0,
+          margin: 20,
         )
       ],
     );
 
     List<Path> lanes = grid.createWaveCoordinates().map((List<Offset> offsets) {
-      final path = Path()..moveTo(offsets[0].dx, offsets[0].dy);
+      final path = Path();
+      final origin = offsets[0];
 
-      for (var i = 0; i < offsets.length; i++) {
-        final next = (i == offsets.length - 1) ? 0 : i + 1;
+      path.moveTo(origin.dx, origin.dy);
 
-        path.quadraticBezierTo(
-            offsets[i].dx, offsets[i].dy, offsets[next].dx, offsets[next].dy);
-      }
+      // path.conicTo(
+      //     offsets[1].dx, offsets[1].dy, offsets[2].dx, offsets[2].dy, 1);
+
+      path.quadraticBezierTo(
+          offsets[1].dx, offsets[1].dy, offsets[2].dx, offsets[2].dy);
+
+      // path.cubicTo(offsets[1].dx - 5, offsets[1].dy, offsets[1].dx + 5,
+      //     offsets[1].dy, offsets[2].dx, offsets[2].dy);
+
+      path.lineTo(offsets[3].dx, offsets[3].dy);
+
+      // path.conicTo(
+      //     offsets[4].dx, offsets[4].dy, offsets[5].dx, offsets[5].dy, 1);
+
+      path.quadraticBezierTo(
+          offsets[4].dx, offsets[4].dy, offsets[5].dx, offsets[5].dy);
+
+      // path.cubicTo(offsets[4].dx - 5, offsets[4].dy, offsets[4].dx + 5,
+      //     offsets[4].dy, offsets[5].dx, offsets[5].dy);
+
+      path.lineTo(origin.dx, origin.dy);
       path.close();
 
       return path;
@@ -94,7 +116,7 @@ class WaveGrid {
 
 class Hub {
   final AxisDirection direction;
-  final Radius angle;
+  final double angle;
   final double length;
   final Offset origin;
   final MainAxisAlignment alignment;
@@ -102,17 +124,13 @@ class Hub {
 
   Hub(
       {this.direction = AxisDirection.down,
-      this.angle = Radius.zero,
+      this.angle = 0.0,
       this.length,
       this.origin = Offset.zero,
       this.alignment = MainAxisAlignment.spaceBetween,
       this.margin = 5.0});
 
   List<HubNode> calculateHubNodes(int lanes) {
-    // 0, 0 , 200 , 0
-    // 200, 0 , 200, 200,
-    // 200, 200, 800, 200,
-    // 800, 200, 0, 0
     final marginTotal = margin * (lanes - 1);
     final nodeLength = (length - marginTotal) / lanes;
     return List.generate(lanes, (index) {
@@ -120,6 +138,20 @@ class Hub {
       double distanceTwo = distanceOne + nodeLength;
       Offset first = Offset(origin.dx, origin.dy + distanceOne);
       Offset second = Offset(origin.dx, origin.dy + distanceTwo);
+
+      if (angle != 0.0) {
+        final radius = distanceOne;
+        //calculate vector from origin
+        final dx = radius * math.cos(angle);
+        final dy = radius * math.sin(angle);
+        first = Offset(origin.dx + dy, origin.dy + dx); //flipped it
+
+        final radius2 = distanceTwo;
+        final dx2 = radius2 * math.cos(angle);
+        final dy2 = radius2 * math.sin(angle);
+        second = Offset(origin.dx + dy2, origin.dy + dx2);
+      }
+
       return HubNode(first, second);
     });
   }
@@ -131,46 +163,3 @@ class HubNode {
 
   HubNode(this.first, this.second);
 }
-
-// void paint(Canvas canvas, Size size) {
-//   final paint = Paint()
-//     ..color = Colors.indigo[900]
-//     ..style = PaintingStyle.fill;
-
-//   final node0 = Offset(0, size.height / 2 - 10);
-//   final node1 = Offset(size.width, size.height / 2 - 10);
-
-//   final top0 = Offset(size.width / 3, size.height / 3 + 8);
-//   final top1 = Offset(size.width / 3, size.height / 3 + 11);
-
-//   final node2 = Offset(size.width, size.height / 2 + 10);
-//   final node3 = Offset(0, size.height / 2 + 10);
-
-//   final path = Path()
-//     ..moveTo(node0.dx, node0.dy)
-//     ..quadraticBezierTo(top0.dx, top0.dy, node1.dx, node1.dy)
-//     ..lineTo(node2.dx, node2.dy)
-//     ..quadraticBezierTo(top1.dx, top1.dy, node3.dx, node3.dy)
-//     ..lineTo(node0.dx, node0.dy)
-//     ..close();
-
-//   canvas.drawPath(path, paint);
-
-//   final node0b = Offset(0, size.height / 2 + 20);
-//   final node1b = Offset(size.width, size.height / 2 + 20);
-
-//   final top0b = Offset(size.width / 3 + 10, size.height / 3 + 12);
-//   final top1b = Offset(size.width / 3 + 10, size.height / 3 + 15);
-
-//   final node2b = Offset(size.width, size.height / 2 + 40);
-//   final node3b = Offset(0, size.height / 2 + 40);
-
-//   final pathb = Path()
-//     ..moveTo(node0b.dx, node0b.dy)
-//     ..quadraticBezierTo(top0b.dx, top0b.dy, node1b.dx, node1b.dy)
-//     ..lineTo(node2b.dx, node2b.dy)
-//     ..quadraticBezierTo(top1b.dx, top1b.dy, node3b.dx, node3b.dy)
-//     ..lineTo(node0b.dx, node0b.dy)
-//     ..close();
-
-//   canvas.drawPath(pathb, paint);
